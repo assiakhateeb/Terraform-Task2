@@ -2,10 +2,12 @@ provider "aws" {
   region = "eu-west-1"
 }
 
+# Instances Moudle
 module "web_servers" {
   source = "./TF-MODULES/modules/Instances"
 }
 
+# VPC Module
 module "default_vpc" {
   source = "./TF-MODULES/modules/default-vpc"
 }
@@ -19,11 +21,12 @@ data "aws_subnet_ids" "subnet_ids" {
   vpc_id = module.default_vpc.vpc_id
 }
 
+# S3 Bucket Moudle 
 module "Bucket" {
   source = "./TF-MODULES/modules/S3-Bucket" 
 }
 
-# create internal elb
+# ELB - Internnal Moudle
 module "elb_internal" {
   source = "./TF-MODULES/modules/Load Balancers"
 
@@ -50,6 +53,7 @@ module "elb_internal" {
   instances = [module.web_servers.instance_id_0, module.web_servers.instance_id_1, module.web_servers.instance_id_2, module.web_servers.instance_id_3]
 }
 
+# ELB Attachment - Internal
 module "elb_attachment_internal" {
   source = "./TF-MODULES/modules/elb_attachment"
 
@@ -61,6 +65,7 @@ module "elb_attachment_internal" {
   instances = [module.web_servers.instance_id_0, module.web_servers.instance_id_1, module.web_servers.instance_id_2, module.web_servers.instance_id_3]
 }
 
+# ELB - Internet facing Moudle
 module "elb_internet_facing" {
   source = "./TF-MODULES/modules/Load Balancers"
 
@@ -84,14 +89,10 @@ module "elb_internet_facing" {
       lb_protocol       = "http"
     },
   ]
-
- /* access_logs = {
-    bucket = "final-task-s3"
-  }*/
-  # ELB attachments
   instances = [module.web_servers.instance_id_0, module.web_servers.instance_id_1, module.web_servers.instance_id_2, module.web_servers.instance_id_3]
 }
 
+# ELB Attachment - Internet facing Moudle 
 module "elb_attachment_internet-facing" {
   source = "./TF-MODULES/modules/elb_attachment"
 
@@ -101,6 +102,7 @@ module "elb_attachment_internet-facing" {
   instances = [module.web_servers.instance_id_0, module.web_servers.instance_id_1, module.web_servers.instance_id_2, module.web_servers.instance_id_3]
 }
 
+# RDS Module
 module "rds_db_instance_01" {
   source = "./TF-MODULES/modules/rds-db"
 }

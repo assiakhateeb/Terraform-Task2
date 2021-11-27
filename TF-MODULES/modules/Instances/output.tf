@@ -14,11 +14,5 @@ output "instance_id_3" {
   value = aws_instance.web[3].id
 }
 
-# output "instance_private_ip" {
-#   value = aws_instance.web.private_ip
-# }
 
-# output "instance_public_ip" {
-#   value = aws_instance.web.public_ip
-# }
 

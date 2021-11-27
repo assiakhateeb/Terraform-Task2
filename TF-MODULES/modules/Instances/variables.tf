@@ -20,13 +20,6 @@
 #     description = "The AZ To Create The Instance"
 # }
 
-# variable "instance_key" {
-#     type = string
-#     default = "vpc-key_pair"
-#     description = "The SSH Key Name To Attach The New Instance; Default Is 'vpc-key_pair' " 
-# }
-
-
 variable "instance_type" {
     type = string
     default = "t2.micro"
